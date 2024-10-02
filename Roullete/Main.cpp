@@ -2,13 +2,15 @@
 using namespace std;
 
 // Betting Function
-int askForBet(int currentMoney) {
+int getBetAmount() {
     int bet;
     do {
-        std::cout << "Enter your bet amount (6 to 20): ";
+        std::cout << "Enter your bet amount (minimum 6, maximum 20): ";
         std::cin >> bet;
-    } while (bet < 6 || bet > 20 || bet > currentMoney);
-
+        if (bet < 6 || bet > 20) {
+            std::cout << "Invalid bet amount! Please enter a value between 6 and 20.\n";
+        }
+    } while (bet < 6 || bet > 20);
     return bet;
 }
 
