@@ -13,7 +13,7 @@ void Wheel::setBall(int n) {
     ball = n;
 }
 
-int Wheel::getBall() {
+ int Wheel::getBall() {
     return ball;
 }
 
