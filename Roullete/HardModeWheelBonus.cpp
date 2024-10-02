@@ -1,5 +1,5 @@
 #include "HardModeWheelBonus.h"
-/*
+
 // Constructor definition
 H::H(int min, int max) : Wheel(min, max), cw(0) {}
 
@@ -29,4 +29,3 @@ void H::iR() {
 void H::dR() {
     setRange(1, getMaxValue() / 2);
 }
-*/
