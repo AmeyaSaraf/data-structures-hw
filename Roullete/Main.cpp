@@ -20,14 +20,13 @@ char getPlayerChoice() {
     do {
         std::cout << "Would you like to Double (Enter D), Halve (Enter H), or Keep your wager (Enter K)? ";
         std::cin >> choice;
-        choice = tolower(choice);
-    } while (choice != 'd' && choice != 'h' && choice != 'k');
+    } while (choice != 'D' && choice != 'H' && choice != 'K');  // Accept uppercase only
 
     return choice;
 }
 
 void playRound(Player& player, Player& house) {
-    int bet = askForBet(player.getM());
+    int bet = getBetAmount();
 
     // Player and house spin the wheel
     int house_wheel = house.sW();
@@ -38,32 +37,48 @@ void playRound(Player& player, Player& house) {
     char choice = getPlayerChoice();
     int outcome = 0;
 
-    if (choice == 'D') {
-        bet *= 2; 
-        if (player_wheel > house_wheel) {
-            cout << "The house wheel landed on: " << house_wheel << endl;
+    if (choice == 'D') {  // Double the bet
+        bet *= 2;
+
+        // Player and house get two spins
+        int player_wheel_2 = player.sW();
+        int house_wheel_2 = house.sW();
+
+        cout << "First spin results:\n";
+        cout << "Player: " << player_wheel << ", House: " << house_wheel << endl;
+        cout << "Second spin results:\n";
+        cout << "Player: " << player_wheel_2 << ", House: " << house_wheel_2 << endl;
+
+        // Player must win both spins, house wins if it wins either spin
+        if ((player_wheel > house_wheel && player_wheel_2 > house_wheel_2)) {
             cout << "You win double!" << endl;
             outcome = bet;
         }
         else {
-            cout << "The house wheel landed on: " << house_wheel << endl;
             cout << "House wins!" << endl;
             outcome = -bet;
         }
     }
-    else if (choice == 'H') {
-        cout << "The house wheel landed on: " << house_wheel << endl;
+    else if (choice == 'H') {  // Halve the bet
         bet /= 2;
-        if (player_wheel > house_wheel) {
-            cout << "You win half!" << endl;
-            outcome = bet;
+
+        // House gets two spins
+        int house_wheel_2 = house.sW();
+
+        cout << "First spin results: House: " << house_wheel << endl;
+        cout << "Second spin results: House: " << house_wheel_2 << endl;
+
+        // House must win both spins to win
+        if (house_wheel > player_wheel && house_wheel_2 > player_wheel) {
+            cout << "House wins!" << endl;
+            outcome = -bet;
         }
         else {
-            cout << "House wins!" << endl;
-            outcome = -bet;
+            cout << "You win half your wager!" << endl;
+            outcome = bet;
         }
     }
-    else if (choice == 'K') {
+    else if (choice == 'K') {  // Keep the bet the same
         cout << "The house wheel landed on: " << house_wheel << endl;
         if (player_wheel > house_wheel) {
             cout << "You win!" << endl;
@@ -75,7 +90,7 @@ void playRound(Player& player, Player& house) {
         }
     }
 
-    player.setM(outcome);
+    player.setM(outcome);  // Update the player's money
 }
 
 int main() {
@@ -95,7 +110,7 @@ int main() {
         char continueGame;
         cout << "Do you want to continue playing? (y/n): ";
         cin >> continueGame;
-        if (tolower(continueGame) != 'y') break;
+        if (continueGame != 'Y' && continueGame != 'y') break;
     }
 
     cout << "Game over! You ended with " << player.getM() << "." << endl;
