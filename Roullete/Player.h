@@ -13,8 +13,9 @@ public:
     void uM(int a); // Method to update player's money
 
 private:
-    int $m; // Player's money
+    int money; // Player's money (replaced $m with money)
     Wheel w; // Instance of the Wheel class
 };
 
 #endif
+
