@@ -9,11 +9,22 @@ void Wheel::setTopRange(int n) {
     topRange = n;
 }
 
+//Set both the bottom and top range
+void Wheel::setRange(int min, int max) {
+    bottomRange = min;
+    topRange = max;
+}
+
+//Return the top range value
+int Wheel::getMaxValue() const {
+    return topRange;
+}
+
 void Wheel::setBall(int n) {
     ball = n;
 }
 
- int Wheel::getBall() {
+int Wheel::getBall() {
     return ball;
 }
 
