@@ -1,3 +1,4 @@
+#pragma once
 #ifndef HARDMODEWHEEL_H
 #define HARDMODEWHEEL_H
 
@@ -14,5 +15,4 @@ private:
     void iR(); // Method to increase range
     void dR(); // Method to decrease range
 };
-
-#endif
+#endif 
