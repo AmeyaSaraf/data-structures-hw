@@ -4,9 +4,9 @@
 
 #include "Wheel.h"
 
-class P {
+class Player {
 public:
-    P(int m); // Constructor to initialize player's money
+    Player(int m); // Constructor to initialize player's money
     void setM(int a); // Setter for player's money
     int getM() const; // Getter for player's money
     int sW(); // Method to spin the wheel and get a value
