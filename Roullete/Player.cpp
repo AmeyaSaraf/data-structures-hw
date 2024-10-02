@@ -1,16 +1,16 @@
 #include "Player.h"
 
 // Constructor to initialize player's money
-Player::Player(int m) : $m(m), w() {}
+Player::Player(int m) : money(m), w() {}
 
 // Setter for player's money
 void Player::setM(int a) {
-    $m = a;
+    money = a;
 }
 
 // Getter for player's money
 int Player::getM() const {
-    return $m;
+    return money;
 }
 
 // Method to spin the wheel and get a value
@@ -21,5 +21,5 @@ int Player::sW() {
 
 // Method to update player's money
 void Player::uM(int a) {
-    $m += a;
+    money += a;
 }
