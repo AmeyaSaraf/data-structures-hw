@@ -1,13 +1,12 @@
 #include "Player.h"
-#include <iostream>
 using namespace std;
 
 // Betting Function
 int askForBet(int currentMoney) {
     int bet;
     do {
-        cout << "Enter your bet amount (6 to 20): ";
-        cin >> bet;
+        std::cout << "Enter your bet amount (6 to 20): ";
+        std::cin >> bet;
     } while (bet < 6 || bet > 20 || bet > currentMoney);
 
     return bet;
@@ -17,58 +16,64 @@ int askForBet(int currentMoney) {
 char getPlayerChoice() {
     char choice;
     do {
-        cout << "Would you like to Double (Enter D), Halve (Enter H), or Keep your wager (Enter K)? ";
-        cin >> choice;
+        std::cout << "Would you like to Double (Enter D), Halve (Enter H), or Keep your wager (Enter K)? ";
+        std::cin >> choice;
         choice = tolower(choice);
     } while (choice != 'd' && choice != 'h' && choice != 'k');
 
     return choice;
 }
 
-void playRound(Player &player, Player &house) {
-    int bet = askForBet(player.getMoney());
+void playRound(Player& player, Player& house) {
+    int bet = askForBet(player.getM());
 
     // Player and house spin the wheel
-    player.spinWheel();
-    house.spinWheel();
+    int house_wheel = house.sW();
+    int player_wheel = player.sW();
 
-    cout << "Your wheel landed on: " << player.getWheelValue() << endl;
-    cout << "The house wheel landed on: " << house.getWheelValue() << endl;
+    cout << "Your wheel landed on: " << player_wheel << endl;
 
     char choice = getPlayerChoice();
     int outcome = 0;
 
-    if (choice == 'd') {
-        bet *= 2; /
-        house.spinWheel(); 
-        if (player.getWheelValue() > house.getWheelValue()) {
+    if (choice == 'D') {
+        bet *= 2; 
+        if (player_wheel > house_wheel) {
+            cout << "The house wheel landed on: " << house_wheel << endl;
             cout << "You win double!" << endl;
             outcome = bet;
-        } else {
+        }
+        else {
+            cout << "The house wheel landed on: " << house_wheel << endl;
             cout << "House wins!" << endl;
             outcome = -bet;
         }
-    } else if (choice == 'h') {
-        bet /= 2; 
-        house.spinWheel(); 
-        if (player.getWheelValue() > house.getWheelValue()) {
+    }
+    else if (choice == 'H') {
+        cout << "The house wheel landed on: " << house_wheel << endl;
+        bet /= 2;
+        if (player_wheel > house_wheel) {
             cout << "You win half!" << endl;
             outcome = bet;
-        } else {
+        }
+        else {
             cout << "House wins!" << endl;
             outcome = -bet;
         }
-    } else {
-        if (player.getWheelValue() > house.getWheelValue()) {
+    }
+    else if (choice == 'K') {
+        cout << "The house wheel landed on: " << house_wheel << endl;
+        if (player_wheel > house_wheel) {
             cout << "You win!" << endl;
             outcome = bet;
-        } else {
+        }
+        else {
             cout << "House wins!" << endl;
             outcome = -bet;
         }
     }
 
-    player.changeMoney(outcome);
+    player.setM(outcome);
 }
 
 int main() {
@@ -81,9 +86,9 @@ int main() {
     Player player(initialMoney);
     Player house(10000); // House starts with a large amount of money
 
-    while (player.getMoney() > 0) {
+    while (player.getM() > 0) {
         playRound(player, house);
-        cout << "You have " << player.getMoney() << " left." << endl;
+        cout << "You have " << player.getM() << " left." << endl;
 
         char continueGame;
         cout << "Do you want to continue playing? (y/n): ";
@@ -91,6 +96,6 @@ int main() {
         if (tolower(continueGame) != 'y') break;
     }
 
-    cout << "Game over! You ended with " << player.getMoney() << "." << endl;
+    cout << "Game over! You ended with " << player.getM() << "." << endl;
     return 0;
 }
