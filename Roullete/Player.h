@@ -7,7 +7,7 @@ public:
     Player(int m, bool hardMode); // Constructor to initialize player's money
     void setM(int a); // Setter for player's money
     int getM() const; // Getter for player's money
-    int sW(int playerResult); // Method to spin the wheel and get a value
+    int sW(int playerResult, char mode, int otherWheel, int spunYet); // Method to spin the wheel and get a value
     void uM(int a); // Method to update player's money
 
 private:

@@ -32,7 +32,7 @@ void playRound(Player& player, Player& house) {
     int bet = getBetAmount(player);
 
     // Player spins the wheel
-    int player_wheel = player.sW();
+    int player_wheel = player.sW(0, 'a',0, -1);
 
     cout << "Your wheel landed on: " << player_wheel << endl;
 
@@ -43,8 +43,9 @@ void playRound(Player& player, Player& house) {
         bet *= 2;
 
         // House get two spins, must win one to win
-        int house_wheel = house.sW(player_wheel, choice);
-        int house_wheel_2 = house.sW(player_wheel, choice);
+        int tempWheel = house.sW(player_wheel, choice, 0, -1);
+        int house_wheel = house.sW(player_wheel, choice, tempWheel, -1);
+        int house_wheel_2 = house.sW(player_wheel, choice, house_wheel, tempWheel); //recreates house_wheel with the same number as tempWheel
 
         cout << "First spin results:\n";
         cout << "House: " << house_wheel << endl;
@@ -58,15 +59,16 @@ void playRound(Player& player, Player& house) {
         }
         else {
             cout << "House wins!" << endl;
-            outcome = player.getM()  - bet;
+            outcome = player.getM() - bet;
         }
     }
     else if (choice == 'H') {  // Halve the bet
         bet /= 2;
 
-        // House gets two spins, must win both to win
-        int house_wheel = house.sW(player_wheel, choice);
-        int house_wheel_2 = house.sW(player_wheel, choice);
+        // House get two spins, must win one to win
+        int tempWheel = house.sW(player_wheel, choice, 0, -1);
+        int house_wheel = house.sW(player_wheel, choice, tempWheel, -1);
+        int house_wheel_2 = house.sW(player_wheel, choice, house_wheel, tempWheel); //recreates house_wheel with the same number as tempWheel
 
         cout << "First spin results:\n";
         cout << "House: " << house_wheel << endl;
@@ -86,7 +88,7 @@ void playRound(Player& player, Player& house) {
     else if (choice == 'K') {  // Keep the bet the same
         //house has one chance to win
 
-        int house_wheel = house.sW(player_wheel, choice);
+        int house_wheel = house.sW(player_wheel, choice, 0, -1);
         cout << "The house wheel landed on: " << house_wheel << endl;
         if (player_wheel > house_wheel) {
             cout << "You win!" << endl;
@@ -94,7 +96,7 @@ void playRound(Player& player, Player& house) {
         }
         else {
             cout << "House wins!" << endl;
-            outcome = player.getM()  - bet;
+            outcome = player.getM() - bet;
         }
     }
 
@@ -107,8 +109,12 @@ int main() {
     cin >> initialMoney;
 
     char hardModeChoice;
-    cout << "Would you like to play in hard mode? (y/n)";
-    cin >> hardModeChoice;
+    do {
+        cout << "Would you like to play in hard mode ? (y / n): ";
+        cin >> hardModeChoice;
+    } while (hardModeChoice != 'y' && hardModeChoice != 'Y' && hardModeChoice != 'n' && hardModeChoice != 'N');  
+
+
     bool hardMode = (hardModeChoice == 'y' || hardModeChoice == 'Y');
 
     Player player(initialMoney, false);
@@ -116,10 +122,9 @@ int main() {
 
     while (player.getM() > 0) {
         playRound(player, house);
-        
+
         if (player.getM() < 0) {
             cout << "You're all out of money!" << endl;
-            break;
         }
         else {
             cout << "You have " << player.getM() << " left." << endl;

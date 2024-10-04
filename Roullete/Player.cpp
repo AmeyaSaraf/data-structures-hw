@@ -14,9 +14,9 @@ int Player::getM() const {
 }
 
 // Method to spin the wheel and get a value
-int Player::sW(int playerResult) {
+int Player::sW(int playerResult, char mode, int otherWheel, int spunYet) {
     if (hardMode) {
-        return hw.spin(playerResult);
+        return hw.spin(playerResult, mode, otherWheel, spunYet);
     }
     else {
         w.spin();
