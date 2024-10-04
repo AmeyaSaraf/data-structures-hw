@@ -2,7 +2,7 @@
 using namespace std;
 
 // Betting Function
-int getBetAmount() {
+int getBetAmount(Player& player) {
     int bet;
     do {
         std::cout << "Enter your bet amount (minimum 6, maximum 20): ";
@@ -10,7 +10,10 @@ int getBetAmount() {
         if (bet < 6 || bet > 20) {
             std::cout << "Invalid bet amount! Please enter a value between 6 and 20.\n";
         }
-    } while (bet < 6 || bet > 20);
+        if (bet > player.getM()) {
+            std::cout << "You don't have enough money to bet that much! Try again. \n";
+        }
+    } while (bet < 6 || bet > 20 || bet > player.getM());
     return bet;
 }
 
@@ -26,10 +29,9 @@ char getPlayerChoice() {
 }
 
 void playRound(Player& player, Player& house) {
-    int bet = getBetAmount();
+    int bet = getBetAmount(player);
 
-    // Player and house spin the wheel
-    int house_wheel = house.sW();
+    // Player spins the wheel
     int player_wheel = player.sW();
 
     cout << "Your wheel landed on: " << player_wheel << endl;
@@ -40,53 +42,59 @@ void playRound(Player& player, Player& house) {
     if (choice == 'D') {  // Double the bet
         bet *= 2;
 
-        // Player and house get two spins
-        int player_wheel_2 = player.sW();
-        int house_wheel_2 = house.sW();
+        // House get two spins, must win one to win
+        int house_wheel = house.sW(player_wheel, choice);
+        int house_wheel_2 = house.sW(player_wheel, choice);
 
         cout << "First spin results:\n";
-        cout << "Player: " << player_wheel << ", House: " << house_wheel << endl;
+        cout << "House: " << house_wheel << endl;
         cout << "Second spin results:\n";
-        cout << "Player: " << player_wheel_2 << ", House: " << house_wheel_2 << endl;
+        cout << "House: " << house_wheel_2 << endl;
 
         // Player must win both spins, house wins if it wins either spin
-        if ((player_wheel > house_wheel && player_wheel_2 > house_wheel_2)) {
+        if ((player_wheel > house_wheel && player_wheel > house_wheel_2)) {
             cout << "You win double!" << endl;
-            outcome = bet;
+            outcome = player.getM() + bet;
         }
         else {
             cout << "House wins!" << endl;
-            outcome = -bet;
+            outcome = player.getM()  - bet;
         }
     }
     else if (choice == 'H') {  // Halve the bet
         bet /= 2;
 
-        // House gets two spins
-        int house_wheel_2 = house.sW();
+        // House gets two spins, must win both to win
+        int house_wheel = house.sW(player_wheel, choice);
+        int house_wheel_2 = house.sW(player_wheel, choice);
 
-        cout << "First spin results: House: " << house_wheel << endl;
-        cout << "Second spin results: House: " << house_wheel_2 << endl;
+        cout << "First spin results:\n";
+        cout << "House: " << house_wheel << endl;
+        cout << "Second spin results:\n";
+        cout << "House: " << house_wheel_2 << endl;
 
         // House must win both spins to win
         if (house_wheel > player_wheel && house_wheel_2 > player_wheel) {
             cout << "House wins!" << endl;
-            outcome = -bet;
+            outcome = player.getM() - bet;
         }
         else {
             cout << "You win half your wager!" << endl;
-            outcome = bet;
+            outcome = player.getM() + bet;
         }
     }
     else if (choice == 'K') {  // Keep the bet the same
+        //house has one chance to win
+
+        int house_wheel = house.sW(player_wheel, choice);
         cout << "The house wheel landed on: " << house_wheel << endl;
         if (player_wheel > house_wheel) {
             cout << "You win!" << endl;
-            outcome = bet;
+            outcome = player.getM() + bet;
         }
         else {
             cout << "House wins!" << endl;
-            outcome = -bet;
+            outcome = player.getM()  - bet;
         }
     }
 
@@ -94,18 +102,28 @@ void playRound(Player& player, Player& house) {
 }
 
 int main() {
-    srand(static_cast<unsigned int>(time(0))); // Seed random number generator
-
     int initialMoney;
     cout << "Welcome to Roulette Wheel Game! How much money do you want to start with? ";
     cin >> initialMoney;
 
-    Player player(initialMoney);
-    Player house(10000); // House starts with a large amount of money
+    char hardModeChoice;
+    cout << "Would you like to play in hard mode? (y/n)";
+    cin >> hardModeChoice;
+    bool hardMode = (hardModeChoice == 'y' || hardModeChoice == 'Y');
+
+    Player player(initialMoney, false);
+    Player house(10000, hardMode); // House starts with a large amount of money
 
     while (player.getM() > 0) {
         playRound(player, house);
-        cout << "You have " << player.getM() << " left." << endl;
+        
+        if (player.getM() < 0) {
+            cout << "You're all out of money!" << endl;
+            break;
+        }
+        else {
+            cout << "You have " << player.getM() << " left." << endl;
+        }
 
         char continueGame;
         cout << "Do you want to continue playing? (y/n): ";

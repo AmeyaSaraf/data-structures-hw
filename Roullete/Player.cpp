@@ -1,7 +1,7 @@
 #include "Player.h"
 
 // Constructor to initialize player's money
-Player::Player(int m) : money(m), w() {}
+Player::Player(int m, bool f) : money(m), hardMode(f), w(), hw() {}
 
 // Setter for player's money
 void Player::setM(int a) {
@@ -14,9 +14,14 @@ int Player::getM() const {
 }
 
 // Method to spin the wheel and get a value
-int Player::sW() {
-    w.spin();
-    return w.getBall();
+int Player::sW(int playerResult) {
+    if (hardMode) {
+        return hw.spin(playerResult);
+    }
+    else {
+        w.spin();
+        return w.getBall();
+    }
 }
 
 // Method to update player's money

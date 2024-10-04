@@ -11,8 +11,8 @@ public:
 
     int getMaxValue() const;     // Getter for the top range value
     void spin();                 // Picks a random value between the bottom and top range and assigns it to ball
-    void setBall(int n);         // Setter for the value of the ball (may not be necessary)
-    int getBall();               // Getter for the value of the ball (may not be necessary)
+    void setBall(int n);         // Setter for the value of the ball 
+    int getBall();               // Getter for the value of the ball 
 
 private:
     int ball = 0; // Ball, initially defined as 0, but changes with spins
