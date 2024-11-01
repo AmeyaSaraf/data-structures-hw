@@ -37,6 +37,13 @@ int Deck::drawCard() {
     return c;
 }
 
+int Deck::peekCard() const {
+    if (h == nullptr) {
+        throw std::out_of_range("Deck is empty");
+    }
+    return h->c;
+}
+
 int Deck::countCards() const {
     return s;
 }

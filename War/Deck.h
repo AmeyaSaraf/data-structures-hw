@@ -21,7 +21,7 @@ public:
     void addCard(int c); // Adds a card to the tail of the deck
     int drawCard(); // Draws a card from the head of the deck
     int countCards() const; // Returns the number of cards remaining in the deck
+    int peekCard() const; //Peeks at top card
 };
 
 #endif
-

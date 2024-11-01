@@ -6,7 +6,7 @@ SidePile::SidePile() {
 
 void SidePile::add(int c) {
     if (top >= maxCards - 1) {
-        throw fullDeck();
+        throw std::out_of_range("Side pile is full!");
     }
     else {
         top = top + 1;
@@ -16,7 +16,7 @@ void SidePile::add(int c) {
 
 int SidePile::remove() {
     if (top < 0) {
-        throw emptyDeck();
+        throw std::out_of_range("Side pile is empty!");
     }
     else {
         int removedCard = Cards[top];
