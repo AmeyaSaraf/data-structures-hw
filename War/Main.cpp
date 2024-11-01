@@ -1,4 +1,3 @@
-#include <iostream>
 #include <random>
 #include "Deck.h" 
 #include "SidePile.h" 
@@ -133,13 +132,7 @@ int main() {
         if (playStyle == 2 && roundCounter >= fixedNumber) {
             std::cout << "Fixed number of rounds reached.\n";
             isGameOver = true;
-        }
-
-        // Safety check to avoid infinite loops
-        /*if (roundCounter > 20) {
-            std::cout << "Game stopped to prevent an infinite loop.\n";
-            isGameOver = true;
-        }*/
+        } 
     }
 
     // Final game state output
