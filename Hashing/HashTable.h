@@ -2,12 +2,10 @@
 #define HASHTABLE_H
 
 #include <vector>
-#include <optional>
 
-// HashTable class definition
 class HashTable {
 private:
-    std::vector<std::optional<int>> table;  // Vector to store hash table elements
+    std::vector<int*> table;  // Vector of pointers to store hash table elements
     int size;  // Size of the hash table
 
     // Hash function to compute index based on value
