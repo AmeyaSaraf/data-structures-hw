@@ -1,14 +1,18 @@
 #include "HashTable.h"
 #include <iostream>
 
+// Constructor to initialize hash table with given size
 HashTable::HashTable(int size) : size(size), table(size) {}
 
+// Destructor
 HashTable::~HashTable() {}
 
+// Hash function to compute index based on value
 int HashTable::hash_function(int x) {
     return x % size;
 }
 
+// Repositions elements after removal to maintain correct order
 void HashTable::reposition(int removed_index) {
     int index = (removed_index + 1) % size;
     while (table[index].has_value()) {
@@ -24,6 +28,7 @@ void HashTable::reposition(int removed_index) {
     }
 }
 
+// Inserts a value into the hash table
 void HashTable::insert(int x) {
     int index = hash_function(x);
     int slots_checked = 0;
@@ -42,6 +47,7 @@ void HashTable::insert(int x) {
     std::cout << "The value " << x << " cannot be inserted." << std::endl;
 }
 
+// Searches for a value in the hash table
 void HashTable::search(int x) {
     int index = hash_function(x);
     int slots_checked = 0;
@@ -62,6 +68,7 @@ void HashTable::search(int x) {
     std::cout << "The value " << x << " cannot be found." << std::endl;
 }
 
+// Removes a value from the hash table
 void HashTable::remove(int x) {
     int index = hash_function(x);
     int slots_checked = 0;
@@ -84,6 +91,7 @@ void HashTable::remove(int x) {
     std::cout << "The value " << x << " cannot be removed." << std::endl;
 }
 
+// Prints the contents of the hash table
 void HashTable::print_table() {
     for (int i = 0; i < size; ++i) {
         if (table[i].has_value()) {
