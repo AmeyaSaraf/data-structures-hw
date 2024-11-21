@@ -5,33 +5,20 @@
 
 class HashTable {
 private:
-    std::vector<int*> table;  // Vector of pointers to store hash table elements
-    int size;  // Size of the hash table
+    std::vector<int*> table; // Vector of pointers to store hash table elements
+    int size; // Size of the hash table
 
-    // Hash function to compute index based on value
-    int hash_function(int x);
-
-    // Repositions elements after removal to maintain correct order
-    void reposition(int removed_index);
+    int hash_function(int x); // Hash function to compute index
+    void reposition(int removed_index); // Repositions elements after removal
 
 public:
-    // Constructor to initialize hash table with given size
-    HashTable(int size = 500);
+    HashTable(int size = 500); // Constructor
+    ~HashTable(); // Destructor
 
-    // Destructor to clean up resources
-    ~HashTable();
-
-    // Inserts a value into the hash table
-    void insert(int x);
-
-    // Searches for a value in the hash table
-    void search(int x);
-
-    // Removes a value from the hash table
-    void remove(int x);
-
-    // Prints the contents of the hash table
-    void print_table();
+    int insert(int x); // Inserts a value into the hash table
+    int search(int x); // Searches for a value
+    int remove(int x); // Removes a value
+    void print_table(); // Prints the contents of the hash table
 };
 
-#endif // HASHTABLE_H
+#endif
